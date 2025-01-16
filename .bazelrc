@@ -1,0 +1,10 @@
+# More information on https://docs.github.com/en/enterprise-server@3.15/code-security/codeql-cli/getting-started-with-the-codeql-cli/preparing-your-code-for-codeql-analysis#creating-databases-for-compiled-languages
+# Look for word "Bazel"
+#
+# Enforce local, unsandboxed builds
+build:codeql --spawn_strategy=local
+# Disable local or remote caching
+build:codeql --disk_cache= --remote_cache=
+build:codeql --noremote_accept_cached
+build:codeql --noincompatible_remote_results_ignore_disk
+build:codeql --noremote_upload_local_results
