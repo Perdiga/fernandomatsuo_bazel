@@ -1,15 +1,7 @@
 #!/bin/bash
 
 #Certify that your runner has unzip 
-#sudo apt update
-#sudo apt install build-essential
 #sudo apt install unzip
-
-# You may need to use sudo to run the following steps depending on your runner configuration
-wget https://github.com/bazelbuild/bazelisk/releases/download/v1.25.0/bazelisk-linux-amd64
-sudo chmod +x bazelisk-linux-amd64
-sudo mv bazelisk-linux-amd64 /usr/local/bin/bazel
-which bazel
 
 # Download CodeQL for Linux with cURL
 wget https://github.com/github/codeql-cli-binaries/releases/download/v2.20.1/codeql-linux64.zip
@@ -24,8 +16,7 @@ $HOME/codeql-home/codeql/codeql resolve languages
 $HOME/codeql-home/codeql/codeql resolve packs
 
 # Build and create CodeQL database
-$HOME/codeql-home/codeql/codeql database create codeqldb --language=python --threads=4 \
---command='bazel build --spawn_strategy=local --nouse_action_cache --noremote_accept_cached --noremote_upload_local_results'
+$HOME/codeql-home/codeql/codeql database create codeqldb --language=python --threads=4 
 
 export CODEQL_SUITES_PATH=$HOME/codeql-home/codeql-repo/python/ql/src/codeql-suites
 mkdir $HOME/codeql-result
@@ -48,7 +39,3 @@ $HOME/codeql-home/codeql/codeql github upload-results \
 --github-auth-stdin=$1
 
 cat $HOME/codeql-result/python-code-scanning.sarif
-
-bazel clean --expunge
-bazel shutdown
-
