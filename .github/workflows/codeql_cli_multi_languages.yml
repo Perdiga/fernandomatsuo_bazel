@@ -1,4 +1,4 @@
-name: "CodeQL CLI"
+name: "CodeQL CLI Multi Languages"
 
 on:
   workflow_dispatch:
@@ -23,5 +23,5 @@ jobs:
 
       - name: Install and RUN CodeQL CLI & Bazel Build
         run: |
-          sudo chmod +x codeql-without-bazel.sh
-          ./codeql-without-bazel.sh ${{ secrets.GH_KEY }}
+          sudo chmod +x codeql-many-languages.sh
+          ./codeql-many-languages.sh ${{ secrets.GH_KEY }}
