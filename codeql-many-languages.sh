@@ -20,29 +20,28 @@ unzip codeql-linux64.zip -d $HOME/codeql-home
 $HOME/codeql-home/codeql/codeql resolve languages
 $HOME/codeql-home/codeql/codeql resolve packs
 
-cd ls -l
+ls -l
 
 cd $HOME/codeql-home/codeql-repo
 github-linguist
 
-# Define the languages CodeQL supports
 declare -A language_map=(
     ["C++"]="cpp"
     ["C#"]="csharp"
-    ["Go"]="Go"
-    ["Java"]="Java"
-    ["JavaScript"]="JavaScript"
-    ["Python"]="Python"
-    ["TypeScript"]="TypeScript"
-    ["Ruby"]="Ruby"
-    ["Swift"]="Swift"
-    ["Kotlin"]="Kotlin"
+    ["Go"]="go"
+    ["Java"]="java"
+    ["JavaScript"]="javascript"
+    ["Python"]="python"
+    ["TypeScript"]="typescript"
+    ["Ruby"]="ruby"
+    ["Swift"]="swift"
+    ["Kotlin"]="kotlin"
 )
 
 # Get the detected languages from GitHub Linguist and extract the language column
 detected_languages=$(github-linguist | awk '{print $3}')
 
-# Filter the detected languages to include only those supported by CodeQL
+# Filter the detected languages and map them to desired outputs
 filtered_languages=()
 for lang in $detected_languages; do
     if [[ ${language_map[$lang]+_} ]]; then
@@ -50,10 +49,10 @@ for lang in $detected_languages; do
     fi
 done
 
-echo "Languages detected by GitHub Linguist: $detected_languages"
-
-# Output the filtered languages as a comma-separated string
+# Save the filtered languages as a comma-separated string in lowercase to a variable
 codeql_supported_languages=$(echo "${filtered_languages[*]}" | tr ' ' ',' | tr '[:upper:]' '[:lower:]')
+
+echo "Languages detected by GitHub Linguist: $codeql_supported_languages"
 
 # Build and create CodeQL database
 $HOME/codeql-home/codeql/codeql database create codeqldb \ 
