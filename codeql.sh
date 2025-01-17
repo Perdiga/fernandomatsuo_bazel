@@ -1,8 +1,9 @@
 #!/bin/bash
 
-sudo apt update
-sudo apt install build-essential
-sudo apt install unzip
+#Certify that your runner has unzip 
+#sudo apt update
+#sudo apt install build-essential
+#sudo apt install unzip
 
 wget https://github.com/bazelbuild/bazelisk/releases/download/v1.25.0/bazelisk-linux-amd64
 sudo chmod +x bazelisk-linux-amd64
@@ -33,8 +34,10 @@ sudo mkdir $HOME/codeql-result
 # # Security extended suite: python-security-extended.qls
 # # Security and quality suite: python-security-and-quality.qls
 sudo $HOME/codeql-home/codeql/codeql database analyze codeqldb \
+--threads=4 \
 --format=sarif-latest \
 --output=$HOME/codeql-result/python-code-scanning.sarif
+
 
 # # Senf SARIF to GitHub
 sudo $HOME/codeql-home/codeql/codeql github upload-results \
