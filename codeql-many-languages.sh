@@ -1,13 +1,18 @@
 #!/bin/bash
 
 #Certify that your runner has unzip 
+#sudo apt update
 #sudo apt install unzip
 
+
+
 # Install github linguist to extract repository languages
+sudo apt install ruby-full
+sudo apt-get install build-essential cmake pkg-config libicu-dev zlib1g-dev libcurl4-openssl-dev libssl-dev ruby-dev
 sudo gem install github-linguist
 
 # Download CodeQL for Linux with cURL
-wget https://github.com/github/codeql-cli-binaries/releases/download/v2.20.1/codeql-linux64.zip
+wget -q https://github.com/github/codeql-cli-binaries/releases/download/v2.20.1/codeql-linux64.zip
 mkdir $HOME/codeql-home
 unzip codeql-linux64.zip -d $HOME/codeql-home
 
@@ -21,8 +26,36 @@ $HOME/codeql-home/codeql/codeql resolve packs
 cd $HOME/codeql-home/codeql-repo
 github-linguist
 
+# Define the languages CodeQL supports
+declare -A language_map=(
+    ["C++"]="cpp"
+    ["C#"]="csharp"
+    ["Go"]="Go"
+    ["Java"]="Java"
+    ["JavaScript"]="JavaScript"
+    ["Python"]="Python"
+    ["TypeScript"]="TypeScript"
+    ["Ruby"]="Ruby"
+    ["Swift"]="Swift"
+    ["Kotlin"]="Kotlin"
+)
+
+# Get the detected languages from GitHub Linguist and extract the language column
+detected_languages=$(github-linguist | awk '{print $3}')
+
+# Filter the detected languages to include only those supported by CodeQL
+filtered_languages=()
+for lang in $detected_languages; do
+    if [[ ${language_map[$lang]+_} ]]; then
+        filtered_languages+=("${language_map[$lang]}")
+    fi
+done
+
+# Output the filtered languages as a comma-separated string
+codeql_supported_languages=$(echo "${filtered_languages[*]}" | tr ' ' ',' | tr '[:upper:]' '[:lower:]')
+
 # Build and create CodeQL database
-$HOME/codeql-home/codeql/codeql database create codeqldb --db-cluster --language=python,javascrit --threads=4 
+$HOME/codeql-home/codeql/codeql database create codeqldb --db-cluster --language=$codeql_supported_languages --threads=4 
 
 # # Code Scanning suite: Queries run by default in CodeQL code scanning on GitHub.
 # # Default: python-code-scanning.qls
