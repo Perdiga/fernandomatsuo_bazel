@@ -68,7 +68,7 @@ for lang in "${filtered_languages[@]}"; do
     # Adjust the database and output paths as needed for each language
     $HOME/codeql-home/codeql/codeql database analyze codeqldb/$lang
         --format=sarif-latest \
-        --sarif-category=$lang
+        --sarif-category=$lang \
         --output=$HOME/codeql-result/$lang-code-scanning.sarif
 
     # Senf SARIF to GitHub
@@ -76,7 +76,7 @@ for lang in "${filtered_languages[@]}"; do
     --repository=$GITHUB_REPOSITORY \
     --ref=$GITHUB_REF \
     --commit=$GITHUB_SHA \
-    --sarif=$HOME/codeql-result/$lang/code-scanning.sarif \
+    --sarif=$HOME/codeql-result/$lang-code-scanning.sarif \
     --github-auth-stdin=$1
 done
 
