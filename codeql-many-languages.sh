@@ -14,7 +14,7 @@ mkdir $HOME/codeql-home
 unzip -q codeql-linux64.zip -d $HOME/codeql-home
 
 # Download queries and add them to the CodeQL home folder
-git clone --recursive https://github.com/github/codeql.git $HOME/codeql-home/codeql-repo
+#git clone --recursive https://github.com/github/codeql.git $HOME/codeql-home/codeql-repo
 
 # Check the configuration
 $HOME/codeql-home/codeql/codeql resolve languages
@@ -53,23 +53,30 @@ codeql_supported_languages=$(echo "${filtered_languages[*]}" | tr ' ' ',' | tr '
 echo "Languages detected by GitHub Linguist: $codeql_supported_languages"
 
 # Build and create CodeQL database
-$HOME/codeql-home/codeql/codeql database create codeqldb --db-cluster --language=$codeql_supported_languages --threads=4 
+$HOME/codeql-home/codeql/codeql database create codeqldb --db-cluster --language $codeql_supported_languages --threads=4 
 
 # # Code Scanning suite: Queries run by default in CodeQL code scanning on GitHub.
 # # Default: python-code-scanning.qls
 # # Security extended suite: python-security-extended.qls
 # # Security and quality suite: python-security-and-quality.qls
 mkdir $HOME/codeql-result
-$HOME/codeql-home/codeql/codeql database analyze codeqldb \
---format=sarif-latest \
---output=$HOME/codeql-result/code-scanning.sarif
 
-# # Senf SARIF to GitHub
-$HOME/codeql-home/codeql/codeql github upload-results \
---repository=$GITHUB_REPOSITORY \
---ref=$GITHUB_REF \
---commit=$GITHUB_SHA \
---sarif=$HOME/codeql-result/code-scanning.sarif \
---github-auth-stdin=$1
+# Run the `codeql database analyze` command for each supported language
+for lang in "${filtered_languages[@]}"; do
+    echo "Running CodeQL analysis for language: $lang"
+    
+    # Adjust the database and output paths as needed for each language
+    $HOME/codeql-home/codeql/codeql database analyze codeqldb
+        --format=sarif-latest \
+        --sarif-category=$lang
+        --output=$HOME/codeql-result/code-scanning.sarif
 
-cat $HOME/codeql-result/code-scanning.sarif
+    # Senf SARIF to GitHub
+    $HOME/codeql-home/codeql/codeql github upload-results \
+    --repository=$GITHUB_REPOSITORY \
+    --ref=$GITHUB_REF \
+    --commit=$GITHUB_SHA \
+    --sarif=$HOME/codeql-result/$lang/code-scanning.sarif \
+    --github-auth-stdin=$1
+done
+
