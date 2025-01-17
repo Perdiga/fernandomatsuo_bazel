@@ -4,7 +4,7 @@
 #sudo apt install unzip
 
 # Install github linguist to extract repository languages
-gem install github-linguist
+sudo gem install github-linguist
 
 # Download CodeQL for Linux with cURL
 wget https://github.com/github/codeql-cli-binaries/releases/download/v2.20.1/codeql-linux64.zip
