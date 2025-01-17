@@ -4,10 +4,7 @@
 #sudo apt update
 #sudo apt install unzip
 
-
-
 # Install github linguist to extract repository languages
-sudo apt install ruby-full
 sudo apt-get install build-essential cmake pkg-config libicu-dev zlib1g-dev libcurl4-openssl-dev libssl-dev ruby-dev
 sudo gem install github-linguist
 
@@ -17,11 +14,13 @@ mkdir $HOME/codeql-home
 unzip codeql-linux64.zip -d $HOME/codeql-home
 
 # Download queries and add them to the CodeQL home folder
-git clone --recursive https://github.com/github/codeql.git $HOME/codeql-home/codeql-repo
+#git clone --recursive https://github.com/github/codeql.git $HOME/codeql-home/codeql-repo
 
 # Check the configuration
 $HOME/codeql-home/codeql/codeql resolve languages
 $HOME/codeql-home/codeql/codeql resolve packs
+
+cd ls -l
 
 cd $HOME/codeql-home/codeql-repo
 github-linguist
@@ -51,11 +50,16 @@ for lang in $detected_languages; do
     fi
 done
 
+echo "Languages detected by GitHub Linguist: $detected_languages"
+
 # Output the filtered languages as a comma-separated string
 codeql_supported_languages=$(echo "${filtered_languages[*]}" | tr ' ' ',' | tr '[:upper:]' '[:lower:]')
 
 # Build and create CodeQL database
-$HOME/codeql-home/codeql/codeql database create codeqldb --db-cluster --language=$codeql_supported_languages --threads=4 
+$HOME/codeql-home/codeql/codeql database create codeqldb \ 
+--db-cluster \
+--language=$codeql_supported_languages \
+--threads=4 
 
 # # Code Scanning suite: Queries run by default in CodeQL code scanning on GitHub.
 # # Default: python-code-scanning.qls
