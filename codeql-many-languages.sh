@@ -50,7 +50,7 @@ codeql_supported_languages=$(echo "${filtered_languages[*]}" | tr ' ' ',' | tr '
 echo "Languages detected by GitHub Linguist: $codeql_supported_languages"
 
 # Build and create CodeQL database
-$HOME/codeql-home/codeql/codeql database create codeqldb --db-cluster --language $codeql_supported_languages --threads=4 
+$HOME/codeql-home/codeql/codeql database create codeqldb --db-cluster --language $codeql_supported_languages
 
 # # Code Scanning suite: Queries run by default in CodeQL code scanning on GitHub.
 # # Default: python-code-scanning.qls

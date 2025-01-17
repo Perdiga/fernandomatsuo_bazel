@@ -24,7 +24,7 @@ $HOME/codeql-home/codeql/codeql resolve languages
 $HOME/codeql-home/codeql/codeql resolve packs
 
 # Build and create CodeQL database
-$HOME/codeql-home/codeql/codeql database create codeqldb --language=python --threads=4 \
+$HOME/codeql-home/codeql/codeql database create codeqldb --language=python \
 --command='bazel build --spawn_strategy=local --nouse_action_cache --noremote_accept_cached --noremote_upload_local_results'
 
 export CODEQL_SUITES_PATH=$HOME/codeql-home/codeql-repo/python/ql/src/codeql-suites

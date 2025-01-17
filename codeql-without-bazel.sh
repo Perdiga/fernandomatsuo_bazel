@@ -16,7 +16,7 @@ $HOME/codeql-home/codeql/codeql resolve languages
 $HOME/codeql-home/codeql/codeql resolve packs
 
 # Build and create CodeQL database
-$HOME/codeql-home/codeql/codeql database create codeqldb --language=python --threads=4 
+$HOME/codeql-home/codeql/codeql database create codeqldb --language=python
 
 export CODEQL_SUITES_PATH=$HOME/codeql-home/codeql-repo/python/ql/src/codeql-suites
 mkdir $HOME/codeql-result
