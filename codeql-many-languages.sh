@@ -66,10 +66,10 @@ for lang in "${filtered_languages[@]}"; do
     echo "Running CodeQL analysis for language: $lang"
     
     # Adjust the database and output paths as needed for each language
-    $HOME/codeql-home/codeql/codeql database analyze codeqldb
+    $HOME/codeql-home/codeql/codeql database analyze codeqldb/$lang
         --format=sarif-latest \
         --sarif-category=$lang
-        --output=$HOME/codeql-result/code-scanning.sarif
+        --output=$HOME/codeql-result/$lang-code-scanning.sarif
 
     # Senf SARIF to GitHub
     $HOME/codeql-home/codeql/codeql github upload-results \
