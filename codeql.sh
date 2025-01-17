@@ -6,7 +6,6 @@
 #sudo apt install unzip
 
 # You may need to use sudo to run the following steps depending on your runner configuration
-
 wget https://github.com/bazelbuild/bazelisk/releases/download/v1.25.0/bazelisk-linux-amd64
 #sudo chmod +x bazelisk-linux-amd64
 sudo mv bazelisk-linux-amd64 /usr/local/bin/bazel
@@ -25,7 +24,7 @@ $HOME/codeql-home/codeql/codeql resolve languages
 $HOME/codeql-home/codeql/codeql resolve packs
 
 # Build and create CodeQL database
-$HOME/codeql-home/codeql/codeql database create codeqldb --language=python \
+sudo $HOME/codeql-home/codeql/codeql database create codeqldb --language=python \
 --command='bazel build --spawn_strategy=local --nouse_action_cache --noremote_accept_cached --noremote_upload_local_results'
 
 export CODEQL_SUITES_PATH=$HOME/codeql-home/codeql-repo/python/ql/src/codeql-suites
