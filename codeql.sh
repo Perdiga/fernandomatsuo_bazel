@@ -32,7 +32,7 @@ sudo mkdir $HOME/codeql-result
 # # Default: python-code-scanning.qls
 # # Security extended suite: python-security-extended.qls
 # # Security and quality suite: python-security-and-quality.qls
-sudo $HOME/codeql-home/codeql/codeql database analyze codeqldb $CODEQL_SUITES_PATH/python-security-and-quality.qls \
+sudo $HOME/codeql-home/codeql/codeql database analyze codeqldb \
 --format=sarif-latest \
 --output=$HOME/codeql-result/python-code-scanning.sarif
 
