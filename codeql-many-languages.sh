@@ -3,16 +3,6 @@
 #Certify that your runner has unzip 
 #sudo apt install unzip
 
-sudo apt install ruby
-
-# Downlaod and install Ruby Gems
-wget https://rubygems.org/static/latest.tar.gz
-tar -xzvf latest.tar.gz
-cd rubygems-*
-sudo ruby setup.rb
-
-gem -v
-
 # Install github linguist to extract repository languages
 gem install github-linguist
 
@@ -32,7 +22,7 @@ cd $HOME/codeql-home/codeql-repo
 github-linguist
 
 # Build and create CodeQL database
-$HOME/codeql-home/codeql/codeql database create codeqldb --db-cluste --language=python,javascrit --threads=4 
+$HOME/codeql-home/codeql/codeql database create codeqldb --db-cluster --language=python,javascrit --threads=4 
 
 # # Code Scanning suite: Queries run by default in CodeQL code scanning on GitHub.
 # # Default: python-code-scanning.qls
@@ -41,14 +31,14 @@ $HOME/codeql-home/codeql/codeql database create codeqldb --db-cluste --language=
 mkdir $HOME/codeql-result
 $HOME/codeql-home/codeql/codeql database analyze codeqldb \
 --format=sarif-latest \
---output=$HOME/codeql-result/python-code-scanning.sarif
+--output=$HOME/codeql-result/code-scanning.sarif
 
 # # Senf SARIF to GitHub
 $HOME/codeql-home/codeql/codeql github upload-results \
 --repository=$GITHUB_REPOSITORY \
 --ref=$GITHUB_REF \
 --commit=$GITHUB_SHA \
---sarif=$HOME/codeql-result/python-code-scanning.sarif \
+--sarif=$HOME/codeql-result/code-scanning.sarif \
 --github-auth-stdin=$1
 
-cat $HOME/codeql-result/python-code-scanning.sarif
+cat $HOME/codeql-result/code-scanning.sarif
