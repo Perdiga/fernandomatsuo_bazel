@@ -20,9 +20,6 @@ git clone --recursive https://github.com/github/codeql.git $HOME/codeql-home/cod
 $HOME/codeql-home/codeql/codeql resolve languages
 $HOME/codeql-home/codeql/codeql resolve packs
 
-ls -l
-
-github-linguist
 declare -A language_map=(
     ["C++"]="cpp"
     ["C#"]="csharp"
