@@ -35,7 +35,7 @@ mkdir $HOME/codeql-result
 # # Security extended suite: python-security-extended.qls
 # # Security and quality suite: python-security-and-quality.qls
 $HOME/codeql-home/codeql/codeql database analyze codeqldb \
---threads=4 \
+--threads=0 \
 --format=sarif-latest \
 --output=$HOME/codeql-result/python-code-scanning.sarif
 
